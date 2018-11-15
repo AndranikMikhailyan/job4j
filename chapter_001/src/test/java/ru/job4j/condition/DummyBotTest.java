@@ -23,4 +23,10 @@ public class DummyBotTest {
         assertThat(bot.answer("Пока."), is("До скорой встречи."));
     }
 
+    @Test
+    public void whenAnythingBot() {
+        DummyBot bot = new DummyBot();
+        assertThat(bot.answer("Что то."), is("Это ставит меня в тупик. Спросите другой вопрос."));
+    }
+
 }
