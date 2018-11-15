@@ -10,11 +10,26 @@ public class Max {
 
     /**
      * Возвращает максимум из двух чисел.
-     * @param first Первое число.
+     *
+     * @param first  Первое число.
      * @param second Второе число.
      */
-
     public int max(int first, int second) {
         return (first > second ? first : second);
     }
+
+    /**
+     * Возвращает максимум из nht[ чисел.
+     *
+     * @param first  Первое число.
+     * @param second Второе число.
+     * @param third Третье число.
+     */
+    public int max(int first, int second, int third) {
+        int temp;
+        temp = this.max(first, second);
+        temp = this.max(temp, third);
+        return temp;
+    }
 }
+
