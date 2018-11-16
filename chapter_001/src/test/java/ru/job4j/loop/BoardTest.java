@@ -10,6 +10,7 @@ public class BoardTest {
         Board board = new Board();
         String rsl = board.paint(3, 3);
         String ln = System.lineSeparator();
+        System.out.println(rsl);
         assertThat(rsl, is(String.format("X X%s X %sX X%s", ln, ln, ln)));
     }
 }
