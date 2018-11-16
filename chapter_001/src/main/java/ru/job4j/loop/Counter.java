@@ -12,9 +12,9 @@ public class Counter {
      * @return Возвращает сумму
      */
 
-    public int add() {
+    public int add(int start, int finish) {
         int summ = 0;
-        for (int i = 1; i <= 10; i++) {
+        for (int i = start; i <= finish; i++) {
             if (i % 2 == 0) {
                 summ += i;
             }
