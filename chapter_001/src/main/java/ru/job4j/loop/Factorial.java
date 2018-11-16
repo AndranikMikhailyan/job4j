@@ -16,11 +16,7 @@ public class Factorial {
     public int calc(int n) {
         int fact = 1;
         for (int i = 1; i < n + 1; i++) {
-            if (n == 0) {
-                fact = 1;
-            } else {
                 fact *= i;
-            }
         }
         return fact;
     }
