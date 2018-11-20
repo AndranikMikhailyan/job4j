@@ -71,7 +71,7 @@ public class Logic {
         boolean result = false;
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table.length; j++) {
-                if (table[i][j] == 1) {
+                if (table[i][j] == 1 || table[j][i] == 1) {
                     result = true;
                 } else {
                     result = false;
@@ -80,21 +80,6 @@ public class Logic {
             }
             if (result) {
                 break;
-            }
-        }
-        if (!result) {
-            for (int i = 0; i < table.length; i++) {
-                for (int j = 0; j < table.length; j++) {
-                    if (table[j][i] == 1) {
-                        result = true;
-                    } else {
-                        result = false;
-                        break;
-                    }
-                }
-                if (result) {
-                    break;
-                }
             }
         }
         return result;
