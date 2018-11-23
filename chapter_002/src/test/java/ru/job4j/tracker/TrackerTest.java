@@ -15,25 +15,22 @@ public class TrackerTest {
     }
 
     @Test
-    public void whenReplaceItemThenTrackerHasReplacedItem() {
+    public void whenReplaceThenTrue() {
         Tracker tracker = new Tracker();
         Item previous = new Item("test1", "testDescription", 123L);
         tracker.add(previous);
         Item next = new Item("test2", "testDescription2", 1238L);
-        next.setId(previous.getId());
-        tracker.replace(previous.getId(), next);
-        assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
+        assertThat(tracker.replace(previous.getId(), next), is(true));
     }
 
     @Test
-    public void whenDeleteFirstItemThenSecondMoveToIndexOfFirstIndex() {
+    public void whenDeleteThenTrue() {
         Tracker tracker = new Tracker();
         Item first = new Item("test1", "testDescription", 123L);
         tracker.add(first);
         Item second = new Item("test2", "testDescription2", 1238L);
         tracker.add(second);
-        tracker.delete(first.getId());
-        assertThat(tracker.findById(second.getId()).getName(), is("test2"));
+        assertThat(tracker.delete(first.getId()), is(true));
     }
 
     @Test

@@ -43,28 +43,34 @@ public class Tracker {
      * @param id Ключ для поиска заменяемой заявки.
      * @param item Заменяющая заявка.
      */
-    public void replace(String id, Item item) {
+    public boolean replace(String id, Item item) {
+        boolean result = false;
         for (int i = 0; i < this.items.length; i++) {
             if (this.items[i].getId().equals(id)) {
                 this.items[i] = item;
                 item.setId(id);
+                result = true;
                 break;
             }
         }
+        return result;
     }
 
     /**
      * Метод удаляет заявку по уникальному ключу.
      * @param id Уникальный ключ.
      */
-    public void delete(String id) {
-        for (int i = 0; i < this.items.length; i++) {
+    public boolean delete(String id) {
+        boolean result = false;
+        for (int i = 0; i < this.items.length && this.items[i] != null; i++) {
             if (this.items[i].getId().equals(id)) {
                 System.arraycopy(this.items, i + 1, this.items, i, this.items.length - 1);
                 this.position--;
+                result = true;
                 break;
             }
         }
+        return result;
     }
 
     /**
