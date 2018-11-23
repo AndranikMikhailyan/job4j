@@ -23,8 +23,7 @@ public class Tracker {
      */
 
     private String generateId() {
-        String id = System.currentTimeMillis() + "111";
-        return id;
+        return System.currentTimeMillis() + "111";
     }
 
     /**
@@ -64,7 +63,7 @@ public class Tracker {
         boolean result = false;
         for (int i = 0; i < this.items.length && this.items[i] != null; i++) {
             if (this.items[i].getId().equals(id)) {
-                System.arraycopy(this.items, i + 1, this.items, i, this.items.length - 1);
+                System.arraycopy(this.items, i + 1, this.items, i, this.items.length - i - 1);
                 this.position--;
                 result = true;
                 break;
