@@ -74,6 +74,66 @@ public class StartUI {
     }
 
     /**
+     * Метод реализует вывод в консоль всеч заявок.
+     */
+    protected void findAllItem() {
+        Item[] items = this.tracker.findAll();
+        for (Item item: items) {
+            System.out.println(item.getName() + " " + item.getDesc() + " " + item.getId());
+        }
+    }
+
+    /**
+     * Метод реализует редактирование заявки.
+     */
+    protected void repleceItem() {
+        String id = this.input.ask("Введите ID редактируемой заявки:");
+        String name = this.input.ask("Введите новое имя заявки:");
+        String desc = this.input.ask("Введите новое описание заявки:");
+        Item item = new Item(name, desc, 222);
+        if (this.tracker.replace(id, item)) {
+            System.out.println(
+                    "Заявка отредактирована. Новое имя заявки - "
+                            + item.getName() + ", " + "новое описание - " + item.getDesc() + ".");
+        } else {
+            System.out.println("Заявки с ID: " + id + " не существует.");
+        }
+    }
+
+    /**
+     * Метод реализует удаление заявки.
+     */
+    protected void deleteItem() {
+        String id = this.input.ask("Введите ID заявки которую необходимо удалить:");
+        if (this.tracker.delete(id)) {
+            System.out.println("Заявка удалена!");
+        } else {
+            System.out.println("Заявка не удалена!");
+        }
+
+    }
+
+    /**
+     * Метод реализует поиск заявки по ID.
+     */
+    protected void findItemById() {
+        String id = this.input.ask("Введите ID заявки которую необходимо найти:");
+        Item item = this.tracker.findById(id);
+        System.out.println("Имя заявки с ID - " + id + ": " + item.getName());
+    }
+
+    /**
+     * Метод реализует поиск заявки по имени.
+     */
+    protected void findItemByName() {
+        String name = this.input.ask("Введите имя заявки которую необходимо найти:");
+        Item[] items = this.tracker.findByName(name);
+        for (Item item: items) {
+            System.out.println("Имя заявки: " + item.getName() + " . Описание заявки: " + item.getDesc());
+        }
+    }
+
+    /**
      * Основной блок программы.
      */
     public void init() {
@@ -84,33 +144,15 @@ public class StartUI {
             if (answer.equals(ADD)) {
                 this.createItem();
             } else if (answer.equals(FIND_ALL)) {
-                Item[] items = this.tracker.findAll();
-                for (Item item: items) {
-                    System.out.println(item.getName() + " " + item.getDesc() + " " + item.getId());
-                }
+                this.findAllItem();
             } else if (answer.equals(REPLECE)) {
-                String id = this.input.ask("Введите ID редактируемой заявки:");
-                String name = this.input.ask("Введите новое имя заявки:");
-                String desc = this.input.ask("Введите новое описание заявки:");
-                Item item = new Item(name, desc, 222);
-                this.tracker.replace(id, item);
-                System.out.println(
-                        "Заявка отредактирована. Новое имя заявки - "
-                                + item.getName() + ", " + "новое описание - " + item.getDesc() + ".");
+                this.repleceItem();
             } else if (answer.equals(DELETE)) {
-                String id = this.input.ask("Введите ID заявки которую необходимо удалить:");
-                this.tracker.delete(id);
-                System.out.println("Заявка удалена!");
+                this.deleteItem();
             } else if (answer.equals(FIND_BY_ID)) {
-                String id = this.input.ask("Введите ID заявки которую необходимо найти:");
-                Item item = this.tracker.findById(id);
-                System.out.println("Имя заявки с ID - " + id + ": " + item.getName());
+                this.findItemById();
             } else if (answer.equals(FIND_BY_NAME)) {
-                String name = this.input.ask("Введите имя заявки которую необходимо найти:");
-                Item[] items = this.tracker.findByName(name);
-                for (Item item: items) {
-                    System.out.println("Имя заявки: " + item.getName() + " . Описание заявки: " + item.getDesc());
-                }
+                this.findItemByName();
             } else if (answer.equals(EXIT)) {
                 exit = true;
             }
