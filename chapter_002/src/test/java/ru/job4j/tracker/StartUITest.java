@@ -25,12 +25,13 @@ public class StartUITest {
     }
 
     @Test
-    public void whenDeleteThenTrue() {
+    public void whenDeleteThen() {
         Tracker tracker = new Tracker();
         Item item1 = tracker.add(new Item("test name1", "описание", 222));
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"3", item1.getId(), "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findById(item1.getId()), is(item2));
+        assertThat(tracker.findAll()[0].getName(), is(item2.getName()));
     }
+
 }
