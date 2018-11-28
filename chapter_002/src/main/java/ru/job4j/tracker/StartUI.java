@@ -30,16 +30,20 @@ public class StartUI {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
+        int[] range = new int[menu.getActionsLentgh()];
+        for (int i = 0; i < menu.getActionsLentgh(); i++) {
+            range[i] = i;
+        }
         int select;
         do {
             menu.show();
-            select = Integer.parseInt(input.ask("Выберите пункт меню:"));
+            select = (input.ask("Выберите пункт меню:", range));
             menu.select(select);
         } while (select != 6);
     }
 
     public static void main(String[] args) {
-        StartUI startUI = new StartUI(new ConsoleInput(), new Tracker());
+        StartUI startUI = new StartUI(new ValidateInput(), new Tracker());
         startUI.init();
     }
 }
