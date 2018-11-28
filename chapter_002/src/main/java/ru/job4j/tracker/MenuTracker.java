@@ -84,7 +84,7 @@ public class MenuTracker {
         }
     }
 
-    public class RepleceItem implements UserAction {
+    public static class RepleceItem implements UserAction {
 
         @Override
         public int key() {
@@ -112,7 +112,7 @@ public class MenuTracker {
         }
     }
 
-    public class DeleteItem implements UserAction {
+    public static class DeleteItem implements UserAction {
 
         @Override
         public int key() {
@@ -135,48 +135,6 @@ public class MenuTracker {
         }
     }
 
-    public class FindItemById implements UserAction {
-
-        @Override
-        public int key() {
-            return 4;
-        }
-
-        @Override
-        public void execute(Input input, Tracker tracker) {
-            String id = input.ask("Введите ID заявки которую необходимо найти:");
-            Item item = tracker.findById(id);
-            System.out.println("Имя заявки с ID - " + id + ": " + item.getName());
-        }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Найти заявку по ID.");
-        }
-    }
-
-    public class FindItemByName implements UserAction {
-
-        @Override
-        public int key() {
-            return 5;
-        }
-
-        @Override
-        public void execute(Input input, Tracker tracker) {
-            String name = input.ask("Введите имя заявки которую необходимо найти:");
-            Item[] items = tracker.findByName(name);
-            for (Item item: items) {
-                System.out.println("Имя заявки: " + item.getName() + " . Описание заявки: " + item.getDesc());
-            }
-        }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Найти заявку по названию.");
-        }
-    }
-
     public class Exit implements UserAction {
 
         @Override
@@ -192,5 +150,47 @@ public class MenuTracker {
         public String info() {
             return String.format("%s. %s", this.key(), "Выйти из программы.");
         }
+    }
+}
+
+class FindItemById implements UserAction {
+
+    @Override
+    public int key() {
+        return 4;
+    }
+
+    @Override
+    public void execute(Input input, Tracker tracker) {
+        String id = input.ask("Введите ID заявки которую необходимо найти:");
+        Item item = tracker.findById(id);
+        System.out.println("Имя заявки с ID - " + id + ": " + item.getName());
+    }
+
+    @Override
+    public String info() {
+        return String.format("%s. %s", this.key(), "Найти заявку по ID.");
+    }
+}
+
+class FindItemByName implements UserAction {
+
+    @Override
+    public int key() {
+        return 5;
+    }
+
+    @Override
+    public void execute(Input input, Tracker tracker) {
+        String name = input.ask("Введите имя заявки которую необходимо найти:");
+        Item[] items = tracker.findByName(name);
+        for (Item item: items) {
+            System.out.println("Имя заявки: " + item.getName() + " . Описание заявки: " + item.getDesc());
+        }
+    }
+
+    @Override
+    public String info() {
+        return String.format("%s. %s", this.key(), "Найти заявку по названию.");
     }
 }
