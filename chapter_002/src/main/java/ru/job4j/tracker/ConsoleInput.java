@@ -23,7 +23,7 @@ public class ConsoleInput implements Input {
         if (exist) {
             return key;
         } else {
-            throw new MenuOutException("Выберите пункт меню из диопазона.");
+            throw new MenuOutException("Введите число из диопазона");
         }
     }
 }
