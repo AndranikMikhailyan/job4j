@@ -28,7 +28,42 @@ public class BishopBlack implements Figure {
         int deltaY = Math.abs(source.y - dest.y);
         boolean isDiagonal = (deltaX - deltaY == 0);
         if (isDiagonal) {
-            steps = new Cell[] { dest };
+            steps = new Cell[deltaX];
+            for (int i = 0; i < steps.length; i++) {
+                if (dest.x > source.x) {
+                    if (dest.y > source.y) {
+                        for (Cell cell : Cell.values()) {
+                            if ((cell.x == source.x + i + 1) && (cell.y == source.y + i + 1)) {
+                                steps[i] = cell;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Cell cell : Cell.values()) {
+                            if ((cell.x == source.x + i + 1) && (cell.y == source.y - i - 1)) {
+                                steps[i] = cell;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (dest.y > source.y) {
+                        for (Cell cell : Cell.values()) {
+                            if ((cell.x == source.x - i - 1) && (cell.y == source.y + i + 1)) {
+                                steps[i] = cell;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Cell cell : Cell.values()) {
+                            if ((cell.x == source.x - i - 1) && (cell.y == source.y - i - 1)) {
+                                steps[i] = cell;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
         return steps;
     }
