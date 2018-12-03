@@ -23,33 +23,31 @@ public class Logic {
         this.figures[this.index++] = figure;
     }
 
-    public boolean move(Cell source, Cell dest) {
+    public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, FigureNotFoundException, OccupiedWayException{
         boolean rst = false;
-        int index = this.findBy(source);
-        if (index == -1) {
-            throw new FigureNotFoundException("В ячейке нет фигур");
-        }
-        Cell[] steps = this.figures[index].way(source, dest);
-        if (steps.length == 0) {
-            throw new ImpossibleMoveException("Эта фигура не может так двигаться");
-        }
-        boolean pathValid = true;
-        for (int i = 0; i < steps.length; i++) {
-            if (this.findBy(steps[i]) != -1) {
-                pathValid = false;
-                break;
-            }
-        }
-        if (!pathValid) {
-            throw new OccupiedWayException("На этом пути есть другая фигура");
-        }
-        if (index != -1 && pathValid) {
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                rst = true;
-                this.figures[index] = this.figures[index].copy(dest);
-            }
+        try {
+            int index = this.findBy(source);
+            Cell[] steps = this.figures[index].way(source, dest);
+            this.pathValid(steps);
+            this.figures[index] = this.figures[index].copy(dest);
+            rst = true;
+        } catch (FigureNotFoundException msg) {
+            System.out.println(msg);
+        } catch (ImpossibleMoveException msg) {
+            System.out.println(msg);
+        } catch (OccupiedWayException msg) {
+            System.out.println(msg);
         }
         return rst;
+    }
+
+    private boolean pathValid(Cell[] steps) {
+        for (int i = 0; i < steps.length; i++) {
+            if (this.findBy(steps[i]) != -1) {
+                throw new OccupiedWayException("Путь загоражден");
+            }
+        }
+        return true;
     }
 
     public void clean() {
