@@ -28,20 +28,15 @@ public class BishopBlack implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        Cell[] steps = new Cell[0];
         if (!isDiagonal(source, dest)) {
             throw new ImpossibleMoveException("Недопустимая траектория движения");
         }
+        Cell[] steps = new Cell[0];
         int deltaX = (dest.x - source.x) / Math.abs(dest.x - source.x);
         int deltaY = (dest.y - source.y) / Math.abs(dest.y - source.y);
         steps = new Cell[Math.abs(source.x - dest.x)];
         for (int i = 0; i < steps.length; i++) {
-            for (Cell cell : Cell.values()) {
-                if ((cell.x == source.x + deltaX + (deltaX * i)) && (cell.y == source.y + deltaY + (deltaY * i))) {
-                    steps[i] = cell;
-                    break;
-                }
-            }
+            steps[i] = Cell.values()[(source.x * 8 + source.y) + ((deltaX + (deltaX * i)) * 8 + (deltaY + (deltaY * i)))];
         }
         return steps;
     }

@@ -28,7 +28,7 @@ public class Logic {
         try {
             int index = this.findBy(source);
             Cell[] steps = this.figures[index].way(source, dest);
-            this.pathValid(steps);
+            this.wayNoValidate(source, steps);
             this.figures[index] = this.figures[index].copy(dest);
             rst = true;
         } catch (FigureNotFoundException msg) {
@@ -41,13 +41,15 @@ public class Logic {
         return rst;
     }
 
-    private boolean pathValid(Cell[] steps) {
+    private void wayNoValidate(Cell sours, Cell[] steps) {
+        if (this.findBy(sours) == -1) {
+            throw new FigureNotFoundException("Вы нажали на пустую ячейку");
+        }
         for (int i = 0; i < steps.length; i++) {
             if (this.findBy(steps[i]) != -1) {
                 throw new OccupiedWayException("Путь загоражден");
             }
         }
-        return true;
     }
 
     public void clean() {
