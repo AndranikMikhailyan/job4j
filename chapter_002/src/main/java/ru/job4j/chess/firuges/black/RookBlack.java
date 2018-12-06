@@ -1,5 +1,6 @@
 package ru.job4j.chess.firuges.black;
 
+import ru.job4j.chess.exceptions.ImpossibleMoveException;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
@@ -21,52 +22,31 @@ public class RookBlack implements Figure {
         return this.position;
     }
 
+    private boolean isVertical(Cell source, Cell dest) {
+        return Math.abs(source.x - dest.x) == 0 && Math.abs(source.y - dest.y) > 0;
+    }
+
+    private boolean isHorizontal(Cell source, Cell dest) {
+        return Math.abs(source.x - dest.x) > 0 && Math.abs(source.y - dest.y) == 0;
+    }
+
     @Override
     public Cell[] way(Cell source, Cell dest) {
+        if (!isHorizontal(source, dest) && !isVertical(source, dest)) {
+            throw new ImpossibleMoveException("Недопустимая траектория движения");
+        }
         Cell[] steps = new Cell[0];
-        int deltaX = Math.abs(source.x - dest.x);
-        int deltaY = Math.abs(source.y - dest.y);
-        if (deltaX > 0 && deltaY == 0) {
-            steps = new Cell[deltaX];
-            if (dest.x > source.x){
-                for (int i = 0; i < steps.length; i++) {
-                    for (Cell cell : Cell.values()) {
-                        if (cell.x == source.x + i +1 && cell.y == source.y) {
-                            steps[i] = cell;
-                            break;
-                        }
-                    }
-                }
-            } else {
-                for (int i = 0; i < steps.length; i++) {
-                    for (Cell cell : Cell.values()) {
-                        if (cell.x == source.x - i -1 && cell.y == source.y) {
-                            steps[i] = cell;
-                            break;
-                        }
-                    }
-                }
+        if (isVertical(source, dest)) {
+            int deltaY = (dest.y - source.y) / Math.abs(dest.y - source.y);
+            steps = new Cell[Math.abs(source.y - dest.y)];
+            for (int i = 0; i < steps.length; i++) {
+                steps[i] = Cell.values()[(source.x * 8 + source.y) + (deltaY + (deltaY * i))];
             }
-        } else if (deltaY > 0 && deltaX == 0) {
-            steps = new Cell[deltaY];
-            if (dest.y > source.y){
-                for (int i = 0; i < steps.length; i++) {
-                    for (Cell cell : Cell.values()) {
-                        if (cell.y == source.y + i +1 && cell.x == source.x) {
-                            steps[i] = cell;
-                            break;
-                        }
-                    }
-                }
-            } else {
-                for (int i = 0; i < steps.length; i++) {
-                    for (Cell cell : Cell.values()) {
-                        if (cell.y == source.y - i -1 && cell.x == source.x) {
-                            steps[i] = cell;
-                            break;
-                        }
-                    }
-                }
+        } else if (isHorizontal(source, dest)) {
+            int deltaX = (dest.x - source.x) / Math.abs(dest.x - source.x);
+            steps = new Cell[Math.abs(source.x - dest.x)];
+            for (int i = 0; i < steps.length; i++) {
+                steps[i] = Cell.values()[(source.x * 8 + source.y) + ((deltaX + (deltaX * i)) * 8 )];
             }
         }
         return steps;

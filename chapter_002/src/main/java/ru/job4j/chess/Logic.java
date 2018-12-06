@@ -41,7 +41,7 @@ public class Logic {
         return rst;
     }
 
-    private void wayNoValidate(Cell sours, Cell[] steps) {
+    private boolean wayNoValidate(Cell sours, Cell[] steps) {
         if (this.findBy(sours) == -1) {
             throw new FigureNotFoundException("Вы нажали на пустую ячейку");
         }
@@ -50,6 +50,7 @@ public class Logic {
                 throw new OccupiedWayException("Путь загоражден");
             }
         }
+        return true;
     }
 
     public void clean() {
