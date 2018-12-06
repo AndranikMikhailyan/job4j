@@ -33,7 +33,7 @@ public class PawnWhite implements Figure {
         } else if (!(source.y == dest.y - 1  && source.x == dest.x)) {
             throw new ImpossibleMoveException("Недопустимая траектория движения");
         }
-        return new Cell[] { dest };
+        return new Cell[] {dest};
     }
 
     @Override

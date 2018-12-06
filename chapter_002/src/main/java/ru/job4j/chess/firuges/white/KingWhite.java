@@ -50,7 +50,7 @@ public class KingWhite implements Figure {
             int deltaX = (dest.x - source.x) / Math.abs(dest.x - source.x);
             steps = new Cell[Math.abs(source.x - dest.x)];
             for (int i = 0; i < steps.length; i++) {
-                steps[i] = Cell.values()[(source.x * 8 + source.y) + ((deltaX + (deltaX * i)) * 8 )];
+                steps[i] = Cell.values()[(source.x * 8 + source.y) + ((deltaX + (deltaX * i)) * 8)];
             }
         } else if (isDiagonal(source, dest)) {
             int deltaX = (dest.x - source.x) / Math.abs(dest.x - source.x);
