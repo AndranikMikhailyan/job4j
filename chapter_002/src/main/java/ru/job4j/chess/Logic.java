@@ -26,10 +26,10 @@ public class Logic {
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, FigureNotFoundException, OccupiedWayException {
         boolean rst = false;
         try {
-            int index = this.findBy(source);
-            Cell[] steps = this.figures[index].way(source, dest);
-            this.wayNoValidate(source, steps);
-            this.figures[index] = this.figures[index].copy(dest);
+            this.soursValidate(source);
+            Cell[] steps = this.figures[this.findBy(source)].way(source, dest);
+            this.wayNoValidate(steps);
+            this.figures[this.findBy(source)] = this.figures[this.findBy(source)].copy(dest);
             rst = true;
         } catch (FigureNotFoundException msg) {
             System.out.println(msg);
@@ -41,10 +41,14 @@ public class Logic {
         return rst;
     }
 
-    private boolean wayNoValidate(Cell sours, Cell[] steps) {
+    private boolean soursValidate(Cell sours) {
         if (this.findBy(sours) == -1) {
             throw new FigureNotFoundException("Вы нажали на пустую ячейку");
         }
+        return true;
+    }
+
+    private boolean wayNoValidate(Cell[] steps) {
         for (int i = 0; i < steps.length; i++) {
             if (this.findBy(steps[i]) != -1) {
                 throw new OccupiedWayException("Путь загоражден");
