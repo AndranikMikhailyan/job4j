@@ -8,15 +8,14 @@ public class ConvertList2Array {
     public int[][] toArray(List<Integer> list, int rows) {
         int cells = (list.size() - list.size() % rows) / rows + 1;
         int[][] array = new int[rows][cells];
-        Iterator<Integer> iterator = list.iterator();
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cells; j++) {
-                if (iterator.hasNext()) {
-                    array[i][j] = iterator.next();
-                } else {
-                    array[i][j] = 0;
-                }
+        int i = 0;
+        int j = 0;
+        for (Integer integer : list) {
+            if (j == cells) {
+                i++;
+                j = 0;
             }
+            array[i][j++] = integer;
         }
         return array;
     }
