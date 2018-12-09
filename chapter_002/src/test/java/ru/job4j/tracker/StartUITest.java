@@ -32,7 +32,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "test name", "test desc", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("test name"));
+        assertThat(tracker.findAll().get(0).getName(), is("test name"));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class StartUITest {
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"3", item1.getId(), "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is(item2.getName()));
+        assertThat(tracker.findAll().get(0).getName(), is(item2.getName()));
     }
 
     @Test
