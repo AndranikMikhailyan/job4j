@@ -65,25 +65,14 @@ public class Bank {
         return result.isPresent() ? result : Optional.empty();
     }
 
-    public boolean amountValid(String passport, double amount) {
+    public boolean transferMoney(String srcPassport, String srcRequisite,
+                                 String destPassport, String dstRequisite, double amount) {
         boolean result = false;
-        List<Account> accounts = getUserAccounts(passport);
-        for (Account account : accounts) {
-            if (amount <= account.getValue()) {
-                result = true;
-                break;
-            }
+        Optional<Account> src = userContainAccount(srcPassport, srcRequisite);
+        Optional<Account> dest = userContainAccount(destPassport, dstRequisite);
+        if (src.isPresent() && dest.isPresent()) {
+            result = src.get().transfer(dest.get(), amount);
         }
         return result;
-    }
-
-    public boolean transferMoney(String srcPassport, String srcRequisite,
-                                  String destPassport, String dstRequisite, double amount) {
-        boolean checkSrsUser = containUser(srcPassport);
-        boolean checkDestUser = containUser(destPassport);
-        boolean checkSrsAccount = userContainAccount(srcPassport, srcRequisite).isPresent();
-        boolean checkDestAccount = userContainAccount(destPassport, dstRequisite).isPresent();
-        boolean checkSrcAmount = amountValid(srcPassport, amount);
-        return checkSrsUser && checkDestUser && checkSrsAccount && checkDestAccount && checkSrcAmount;
     }
 }
