@@ -12,11 +12,11 @@ public class Bank {
         users.putIfAbsent(user, new ArrayList<>());
     }
 
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         this.users.remove(user);
     }
 
-    public void addAccountToUser(String passport, Account account){
+    public void addAccountToUser(String passport, Account account) {
         for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
             if (entry.getKey().getPassport().equals(passport)) {
                 entry.getValue().add(account);
@@ -34,7 +34,7 @@ public class Bank {
         }
     }
 
-    public List<Account> getUserAccounts (String passport) {
+    public List<Account> getUserAccounts(String passport) {
         ArrayList<Account> result = new ArrayList<>();
         for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
             if (entry.getKey().getPassport().equals(passport)) {
@@ -80,13 +80,13 @@ public class Bank {
         return result;
     }
 
-    public boolean transferMoney (String srcPassport, String srcRequisite,
+    public boolean transferMoney(String srcPassport, String srcRequisite,
                                   String destPassport, String dstRequisite, double amount) {
         boolean checkSrsUser = containUser(srcPassport);
         boolean checkDestUser = containUser(destPassport);
         boolean checkSrsAccount = userContainAccount(srcPassport, srcRequisite);
         boolean checkDestAccount = userContainAccount(destPassport, dstRequisite);
         boolean checkSrcAmount = amountValid(srcPassport, amount);
-        return checkSrsUser && checkDestUser && checkSrsAccount && checkDestAccount &&checkSrcAmount;
+        return checkSrsUser && checkDestUser && checkSrsAccount && checkDestAccount && checkSrcAmount;
     }
 }
