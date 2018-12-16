@@ -23,7 +23,7 @@ public class Account {
 
     public boolean transfer(Account account, double amount) {
         boolean result = false;
-        if (amount <= amount) {
+        if (amount <= this.value) {
             result = true;
         }
         return result;
