@@ -1,9 +1,6 @@
 package ru.job4j.bank;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Bank {
     private TreeMap<User, List<Account>> users = new TreeMap<>();
@@ -56,16 +53,16 @@ public class Bank {
         return result;
     }
 
-    public boolean userContainAccount(String passport, String requisite) {
-        boolean result = false;
+    public Optional<Account> userContainAccount(String passport, String requisite) {
+        Optional<Account> result = Optional.empty();
         List<Account> accounts = getUserAccounts(passport);
         for (Account account : accounts) {
             if (requisite.equals(account.getRequisites())) {
-                result = true;
+                result = Optional.of(account);
                 break;
             }
         }
-        return result;
+        return result.isPresent() ? result : Optional.empty();
     }
 
     public boolean amountValid(String passport, double amount) {
@@ -84,8 +81,8 @@ public class Bank {
                                   String destPassport, String dstRequisite, double amount) {
         boolean checkSrsUser = containUser(srcPassport);
         boolean checkDestUser = containUser(destPassport);
-        boolean checkSrsAccount = userContainAccount(srcPassport, srcRequisite);
-        boolean checkDestAccount = userContainAccount(destPassport, dstRequisite);
+        boolean checkSrsAccount = userContainAccount(srcPassport, srcRequisite).isPresent();
+        boolean checkDestAccount = userContainAccount(destPassport, dstRequisite).isPresent();
         boolean checkSrcAmount = amountValid(srcPassport, amount);
         return checkSrsUser && checkDestUser && checkSrsAccount && checkDestAccount && checkSrcAmount;
     }

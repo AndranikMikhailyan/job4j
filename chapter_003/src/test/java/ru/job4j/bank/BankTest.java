@@ -3,6 +3,7 @@ package ru.job4j.bank;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -33,7 +34,7 @@ public class BankTest {
         bank.addUser(user);
         Account account = new Account("123123123");
         bank.addAccountToUser("0713845698", account);
-        assertThat(bank.userContainAccount("0713845698", "123123123"), is(true));
+        assertThat(bank.userContainAccount("0713845698", "123123123"), is(Optional.of(account)));
     }
 
     @Test
@@ -44,7 +45,7 @@ public class BankTest {
         Account account = new Account("123123123");
         bank.addAccountToUser("0713845698", account);
         bank.deleteAccountFromUser("0713845698", account);
-        assertThat(bank.userContainAccount("0713845698", "123123123"), is(false));
+        assertThat(bank.userContainAccount("0713845698", "123123123"), is(Optional.empty()));
     }
 
     @Test
