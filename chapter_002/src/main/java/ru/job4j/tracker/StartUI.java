@@ -2,7 +2,6 @@ package ru.job4j.tracker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class StartUI {
 
@@ -35,15 +34,12 @@ public class StartUI {
         for (int i = 0; i < menu.getActionsLentgh(); i++) {
             range[i] = i;
         }
-        Consumer<MenuTracker> consumer = (menuTracker) -> {
-                int select;
-                do {
-                menu.show();
-                select = (input.ask("Выберите пункт меню:", range));
-                menu.select(select);
-            } while (select != 6);
-        };
-        consumer.accept(menu);
+        int select;
+        do {
+            menu.show(o -> System.out.println(o));
+            select = (input.ask("Выберите пункт меню:", range));
+            menu.select(select);
+        } while (select != 6);
     }
 
     public static void main(String[] args) {
