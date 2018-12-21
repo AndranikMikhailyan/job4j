@@ -26,6 +26,7 @@ public class StartUI {
 
     /**
      * Основной блок программы.
+     * Выводит меню.
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
