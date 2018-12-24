@@ -1,7 +1,6 @@
 package ru.job4j.tracker;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class StartUI {
 
@@ -11,14 +10,17 @@ public class StartUI {
      */
     private final Tracker tracker;
 
+    private Consumer<String> consumer;
+
     /**
      * Конструктор инициализирующий поля.
      * @param input ввод данных.
      * @param tracker хранилище заявок.
      */
-    public StartUI(Input input, Tracker tracker) {
+    public StartUI(Input input, Tracker tracker, Consumer<String> consumer) {
         this.input = input;
         this.tracker = tracker;
+        this.consumer = consumer;
     }
     /**
      * Метод отображает меню в программе.
@@ -29,7 +31,7 @@ public class StartUI {
      * Выводит меню.
      */
     public void init() {
-        MenuTracker menu = new MenuTracker(this.input, this.tracker);
+        MenuTracker menu = new MenuTracker(this.input, this.tracker, System.out :: println);
         menu.fillActions();
         int[] range = new int[menu.getActionsLentgh()];
         for (int i = 0; i < menu.getActionsLentgh(); i++) {
@@ -37,14 +39,14 @@ public class StartUI {
         }
         int select;
         do {
-            menu.show(o -> System.out.println(o));
-            select = (input.ask("Выберите пункт меню:", range));
+            menu.show();
+            select = (input.ask("Выберите пункт меню:", range, System.out :: println));
             menu.select(select);
         } while (select != 6);
     }
 
     public static void main(String[] args) {
-        StartUI startUI = new StartUI(new ValidateInput(new ConsoleInput()), new Tracker());
+        StartUI startUI = new StartUI(new ValidateInput(new ConsoleInput()), new Tracker(), System.out :: println);
         startUI.init();
     }
 }

@@ -28,14 +28,14 @@ public class ValidateInputTest {
     @Test
     public void whenInvalidInput() {
         ValidateInput input = new ValidateInput(new StubInput(new String[] {"invalid", "1"}));
-        input.ask("Enter", new int[] {1});
+        input.ask("Enter", new int[] {1}, System.out :: println);
         assertThat(this.mem.toString(), is(String.format("Введите число%n")));
     }
 
     @Test
     public void whenOutOfRangeInput() {
         ValidateInput input = new ValidateInput(new StubInput(new String[] {"9", "1"}));
-        input.ask("Enter", new int[] {1});
+        input.ask("Enter", new int[] {1}, System.out :: println);
         assertThat(this.mem.toString(), is(String.format("Введите число из диопазона%n")));
     }
 }

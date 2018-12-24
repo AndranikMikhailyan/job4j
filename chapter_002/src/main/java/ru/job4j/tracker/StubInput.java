@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.function.Consumer;
+
 public class StubInput implements Input {
 
     private final String[] value;
@@ -10,13 +12,13 @@ public class StubInput implements Input {
     }
 
     @Override
-    public String ask(String question) {
+    public String ask(String question, Consumer<String> consumer) {
         return this.value[this.position++];
     }
 
     @Override
-    public int ask(String question, int[] range) {
-        int key = Integer.valueOf(this.ask(question));
+    public int ask(String question, int[] range, Consumer<String> consumer) {
+        int key = Integer.valueOf(this.ask(question, System.out :: println));
         boolean exist = false;
         for (int value : range) {
             if (value == key) {
