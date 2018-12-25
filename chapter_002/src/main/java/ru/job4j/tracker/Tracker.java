@@ -3,6 +3,7 @@ package ru.job4j.tracker;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @version $Id$
@@ -88,13 +89,9 @@ public class Tracker {
      * @return result Возвращаемые заявки.
      */
     public List<Item> findByName(String key) {
-        List<Item> temp = new ArrayList<>();
-        for (Item item : items) {
-            if (item != null && item.getName().equals(key)) {
-                temp.add(item);
-            }
-        }
-        return temp;
+        return this.items.stream().filter(
+                item -> item != null && item.getName().equals(key))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -103,14 +100,8 @@ public class Tracker {
      * @return result Возвращаемая заявка.
      */
     public Item findById(String id) {
-        Item result = null;
-        for (Item item :  this.items) {
-            if (item.getId().equals(id)) {
-                result = item;
-                break;
-            }
-        }
-        return result;
+        return this.items.stream().filter(item -> item.getId().equals(id))
+                .collect(Collectors.toList()).get(0);
     }
 
 
