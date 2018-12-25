@@ -5,33 +5,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.function.Consumer;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class StartUITest {
 
-    private final PrintStream stdout = System.out;
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    private final Consumer<String> output = new Consumer<String>() {
+        private final PrintStream stdout  = new PrintStream(out);
+        @Override
+        public void accept(String s) {
+            stdout.println(s);
+        }
 
-    @Before
-    public void loadOutput() {
-        System.out.println("execute before method");
-        System.setOut(new PrintStream(this.out));
-    }
-
-    @After
-    public void backOutput() {
-        System.setOut(this.stdout);
-        System.out.println("execute after method");
-    }
+        @Override
+        public String toString() {
+            return new String(out.toByteArray());
+        }
+    };
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "test name", "test desc", "6"});
-        new StartUI(input, tracker, System.out :: println).init();
+        new StartUI(input, tracker, output).init();
         assertThat(tracker.findAll().get(0).getName(), is("test name"));
     }
 
@@ -40,7 +41,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "desc", 222));
         Input input = new StubInput(new String[]{"2", item.getId(), "replece name", "заменили заявку", "6"});
-        new StartUI(input, tracker, System.out :: println).init();
+        new StartUI(input, tracker, output).init();
         assertThat(tracker.findById(item.getId()).getName(), is("replece name"));
     }
 
@@ -50,7 +51,7 @@ public class StartUITest {
         Item item1 = tracker.add(new Item("test name1", "описание", 222));
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"3", item1.getId(), "6"});
-        new StartUI(input, tracker, System.out :: println).init();
+        new StartUI(input, tracker, output).init();
         assertThat(tracker.findAll().get(0).getName(), is(item2.getName()));
     }
 
@@ -60,8 +61,8 @@ public class StartUITest {
         Item item1 = tracker.add(new Item("test name1", "описание", 222));
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"1", "6"});
-        new StartUI(input, tracker, System.out :: println).init();
-        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+        new StartUI(input, tracker, output).init();
+        assertThat(this.output.toString(), is(new StringBuilder()
                 .append("Меню." + System.lineSeparator())
                 .append("0. Добавить новую заявку." + System.lineSeparator())
                 .append("1. Показать список всех заявок." + System.lineSeparator())
@@ -90,8 +91,8 @@ public class StartUITest {
         Thread.sleep(1000L); // без задержки ID одинаковый получается так как он генерируется от времени в миллисекундах.
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"4", item2.getId(), "6"});
-        new StartUI(input, tracker, System.out :: println).init();
-        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+        new StartUI(input, tracker, output).init();
+        assertThat(this.output.toString(), is(new StringBuilder()
                 .append("Меню." + System.lineSeparator())
                 .append("0. Добавить новую заявку." + System.lineSeparator())
                 .append("1. Показать список всех заявок." + System.lineSeparator())
@@ -119,8 +120,8 @@ public class StartUITest {
         Item item1 = tracker.add(new Item("test name1", "описание", 222));
         Item item2 = tracker.add(new Item("test name2", "desc", 333));
         Input input = new StubInput(new String[]{"5", item2.getName(), "6"});
-        new StartUI(input, tracker, System.out :: println).init();
-        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+        new StartUI(input, tracker, output).init();
+        assertThat(this.output.toString(), is(new StringBuilder()
                 .append("Меню." + System.lineSeparator())
                 .append("0. Добавить новую заявку." + System.lineSeparator())
                 .append("1. Показать список всех заявок." + System.lineSeparator())

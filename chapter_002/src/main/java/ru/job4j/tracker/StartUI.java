@@ -31,7 +31,7 @@ public class StartUI {
      * Выводит меню.
      */
     public void init() {
-        MenuTracker menu = new MenuTracker(this.input, this.tracker, System.out :: println);
+        MenuTracker menu = new MenuTracker(this.input, this.tracker, consumer);
         menu.fillActions();
         int[] range = new int[menu.getActionsLentgh()];
         for (int i = 0; i < menu.getActionsLentgh(); i++) {
@@ -40,7 +40,7 @@ public class StartUI {
         int select;
         do {
             menu.show();
-            select = (input.ask("Выберите пункт меню:", range, System.out :: println));
+            select = (input.ask("Выберите пункт меню:", range, consumer));
             menu.select(select);
         } while (select != 6);
     }
