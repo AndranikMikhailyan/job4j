@@ -14,31 +14,30 @@ public class Bank {
     }
 
     public void addAccountToUser(String passport, Account account) {
-        for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
-            if (entry.getKey().getPassport().equals(passport)) {
-                entry.getValue().add(account);
-                break;
+        this.users.forEach((user, accounts) -> {
+            if (user.getPassport().equals(passport)) {
+                accounts.add(account);
             }
-        }
+        });
     }
 
     public void deleteAccountFromUser(String passport, Account account) {
-        for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
-            if (entry.getKey().getPassport().equals(passport)) {
-                entry.getValue().remove(entry.getValue().indexOf(account));
-                break;
+        this.users.forEach((user, accounts) -> {
+            if (user.getPassport().equals(passport)) {
+                if (accounts.contains(account)) {
+                    accounts.remove(account);
+                }
             }
-        }
+        });
     }
 
     public List<Account> getUserAccounts(String passport) {
         ArrayList<Account> result = new ArrayList<>();
-        for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
-            if (entry.getKey().getPassport().equals(passport)) {
-                result = (ArrayList<Account>) entry.getValue();
-                break;
+        this.users.forEach((user, accounts) -> {
+            if (user.getPassport().equals(passport)) {
+                result.addAll(accounts);
             }
-        }
+        });
         return result;
     }
 
