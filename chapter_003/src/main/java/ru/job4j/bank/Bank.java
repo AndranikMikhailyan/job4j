@@ -50,8 +50,9 @@ public class Bank {
     }
 
     public Optional<Account> userContainAccount(String passport, String requisite) {
-        return this.getUserAccounts(passport).stream().findAny().filter(
-                account -> requisite.equals(account.getRequisites()));
+        return this.getUserAccounts(passport).stream()
+                .filter(account -> requisite.equals(account.getRequisites()))
+                .findFirst();
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
