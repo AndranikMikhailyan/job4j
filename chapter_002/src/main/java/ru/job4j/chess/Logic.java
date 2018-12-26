@@ -6,7 +6,9 @@ import ru.job4j.chess.exceptions.OccupiedWayException;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * //TODO add comments.
@@ -65,13 +67,9 @@ public class Logic {
     }
 
     private int findBy(Cell cell) {
-        int rst = -1;
-        for (int index = 0; index != this.figures.length; index++) {
-            if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
-                rst = index;
-                break;
-            }
-        }
-        return rst;
+        Optional<Figure> rst = Arrays.stream(this.figures)
+                .filter(figure -> (figure != null && figure.position().equals(cell)))
+                .findFirst();
+        return rst.isPresent() ? Arrays.asList(figures).indexOf(rst.get()) : -1;
     }
 }
