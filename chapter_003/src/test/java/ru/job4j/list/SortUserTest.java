@@ -11,21 +11,20 @@ public class SortUserTest {
 
     @Test
     public void when() {
-        List<User> users = new ArrayList<>();
-        users.add(new User("Петя", 30));
-        users.add(new User("Саша", 25));
-        users.add(new User("Аня", 38));
-        users.add(new User("Яша", 20));
+        List<User> users = List.of(
+                new User("Петя", 30),
+                new User("Саша", 25),
+                new User("Аня", 38),
+                new User("Яша", 20)
+        );
         SortUser sortUser = new SortUser();
         Set<User> result = sortUser.sort(users);
-        Set<User> except = new TreeSet<>(
-                Arrays.asList(
-                        new User("Яша", 20),
-                        new User("Саша", 25),
-                        new User("Петя", 30),
-                        new User("Аня", 38)
-                )
-            );
+        Set<User> except = Set.of(
+                new User("Яша", 20),
+                new User("Саша", 25),
+                new User("Петя", 30),
+                new User("Аня", 38)
+        );
         assertThat(result, is(except));
      }
 
@@ -35,16 +34,10 @@ public class SortUserTest {
         User viktor = new User("Виктор", 30);
         User anya = new User("Аня", 30);
         User dasha = new User("Даша", 30);
-        List<User> users = new ArrayList<>();
-        users.add(aleksandr);
-        users.add(viktor);
-        users.add(anya);
-        users.add(dasha);
+        List<User> users = List.of(aleksandr, viktor, anya, dasha);
         SortUser sortUser = new SortUser();
         List<User> result = sortUser.sortNameLength(users);
-        List<User> except = new ArrayList<>(
-                Arrays.asList(anya, dasha, viktor, aleksandr)
-        );
+        List<User> except = List.of(anya, dasha, viktor, aleksandr);
         assertThat(result, is(except));
     }
 
@@ -54,16 +47,10 @@ public class SortUserTest {
         User aleksandr2 = new User("Александр", 29);
         User anya = new User("Аня", 25);
         User dasha = new User("Даша", 30);
-        List<User> users = new ArrayList<>();
-        users.add(aleksandr1);
-        users.add(aleksandr2);
-        users.add(anya);
-        users.add(dasha);
+        List<User> users = List.of(aleksandr1, aleksandr2, anya, dasha);
         SortUser sortUser = new SortUser();
         List<User> result = sortUser.sortByAllFields(users);
-        List<User> except = new ArrayList<>(
-                Arrays.asList(aleksandr2, aleksandr1, anya, dasha)
-        );
+        List<User> except = List.of(aleksandr2, aleksandr1, anya, dasha);
         assertThat(result, is(except));
     }
 }
