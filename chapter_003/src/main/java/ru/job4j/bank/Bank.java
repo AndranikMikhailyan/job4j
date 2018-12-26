@@ -1,6 +1,7 @@
 package ru.job4j.bank;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Bank {
     private TreeMap<User, List<Account>> users = new TreeMap<>();
@@ -42,26 +43,15 @@ public class Bank {
     }
 
     public boolean containUser(String passport) {
-        boolean result = false;
-        for (Map.Entry<User, List<Account>> entry : this.users.entrySet()) {
-            if (entry.getKey().getPassport().equals(passport)) {
-                result = true;
-                break;
-            }
-        }
+        boolean result = this.users.entrySet().stream().anyMatch(
+                userListEntry -> userListEntry.getKey().getPassport().equals(passport)
+        );
         return result;
     }
 
     public Optional<Account> userContainAccount(String passport, String requisite) {
-        Optional<Account> result = Optional.empty();
-        List<Account> accounts = getUserAccounts(passport);
-        for (Account account : accounts) {
-            if (requisite.equals(account.getRequisites())) {
-                result = Optional.of(account);
-                break;
-            }
-        }
-        return result.isPresent() ? result : Optional.empty();
+        return this.getUserAccounts(passport).stream().findAny().filter(
+                account -> requisite.equals(account.getRequisites()));
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
