@@ -10,11 +10,11 @@ import static org.hamcrest.core.Is.is;
 public class PhoneDictionaryTest {
     @Test
     public void whenFindByName() {
-        PhoneDictionary phones = new PhoneDictionary();
+        var phones = new PhoneDictionary();
         phones.add(
                 new Person("Ivan", "Ivanov", "89996665588", "Moscow")
         );
-        List<Person> persons = phones.find("Ivan");
+        var persons = phones.find("Ivan");
         assertThat(persons.iterator().next().getSurname(), is("Ivanov"));
     }
 }
