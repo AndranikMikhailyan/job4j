@@ -40,9 +40,4 @@ public class ArrayIterator implements Iterator<Integer> {
         }
         return result;
     }
-
-    public static void main(String[] args) {
-        Iterator it = new ArrayIterator(new int[][] {});
-        System.out.println(it.hasNext());
-    }
 }
