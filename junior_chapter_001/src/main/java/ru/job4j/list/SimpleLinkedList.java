@@ -22,7 +22,7 @@ public class SimpleLinkedList<E> implements Iterable<E> {
 
     public boolean add(E e) {
         Node<E> temp = last;
-        Node<E> newLink = new Node<>(e);
+        Node<E> newLink = new Node<>(last, e);
         last = newLink;
         if (temp == null) {
             first = newLink;
@@ -32,6 +32,12 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         size++;
         modCount++;
         return true;
+    }
+
+    public E remove() {
+        Node<E> temp = last;
+        last = last.prev;
+        return temp.date;
     }
 
     public E get(int index) {
@@ -49,9 +55,11 @@ public class SimpleLinkedList<E> implements Iterable<E> {
 
         E date;
         Node<E> next;
+        Node<E> prev;
 
-        Node(E date) {
+        Node(Node<E> prev, E date) {
             this.date = date;
+            this.prev = prev;
         }
     }
 
