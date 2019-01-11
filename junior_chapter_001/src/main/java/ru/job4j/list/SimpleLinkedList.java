@@ -37,6 +37,7 @@ public class SimpleLinkedList<E> implements Iterable<E> {
     public E remove() {
         Node<E> temp = last;
         last = last.prev;
+        size--;
         return temp.date;
     }
 

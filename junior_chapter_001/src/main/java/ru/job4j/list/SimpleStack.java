@@ -12,5 +12,7 @@ public class SimpleStack<T> {
         stack.add(value);
     }
 
-
+    public int getSize() {
+        return stack.getSize();
+    }
 }
