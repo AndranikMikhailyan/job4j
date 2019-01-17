@@ -1,6 +1,5 @@
 package ru.job4j.tree;
 
-import javax.imageio.ImageTranscoder;
 import java.util.*;
 
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
@@ -45,7 +44,20 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         }
         return rsl;
 }
-
+    public boolean isBinary() {
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(root);
+        boolean rslt = true;
+        while (!data.isEmpty()) {
+            if (data.peek().leaves().size() <= 2) {
+                data.addAll(data.poll().leaves());
+            } else {
+                rslt = false;
+                break;
+            }
+        }
+        return rslt;
+    }
 
     @Override
     public Iterator<E> iterator() {
