@@ -5,26 +5,11 @@ import java.util.Objects;
 public class User {
 
     private String name;
-    private String oldName;
     private int id;
 
     public User(String name, int id) {
         this.name = name;
-        this.oldName = name;
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.oldName = this.name;
-        this.name = name;
-    }
-
-    public boolean nameChanged() {
-        return !name.equals(oldName);
     }
 
     @Override
@@ -43,5 +28,13 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(name, id);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getId() {
+        return this.id;
     }
 }
