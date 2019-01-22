@@ -8,24 +8,23 @@ import java.util.stream.Collectors;
 public class DeleteWords {
 
     public void dropAbuses(Reader in, Writer out, String[] abuse) throws IOException {
-        List<String> abuseList = Arrays.stream(abuse).collect(Collectors.toList());
-        StringBuilder word = new StringBuilder();
-        int ch;
-        while ((ch = in.read()) != -1) {
-            char chr = (char) ch;
-            if (chr != ' ') {
-                word.append(chr);
-            } else {
-                if (!abuseList.contains(word.toString())) {
-                    out.write(word.toString());
-                    word.delete(0, word.toString().length());
-                } else {
-                    word.delete(0, word.toString().length());
-                }
-            }
+        List<String> abuseWords = Arrays.stream(abuse).collect(Collectors.toList());
+        BufferedReader brIn = new BufferedReader(in);
+        String sours;
+        while ((sours = brIn.readLine()) != null) {
+            String[] words = sours.split(" ");
+            Arrays.stream(words).forEach(word -> {
+               if (!abuseWords.contains(word)) {
+                   try {
+                       out.write(word + " ");
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               }
+            });
         }
+        brIn.close();
         out.flush();
         out.close();
-        in.close();
     }
 }
