@@ -17,7 +17,7 @@ public class SearchTest {
         Search search = new Search();
         System.out.println(System.getProperty("java.io.tmpdir"));
         String tmpdir = System.getProperty("java.io.tmpdir");
-        File parent = new File(tmpdir + "parent");
+        File parent = new File(tmpdir + "/parent");
         parent.mkdir();
         File folder1 = new File(parent.getPath() + "/папка1");
         File folder2 = new File(parent.getPath() + "/папка2");
@@ -42,7 +42,7 @@ public class SearchTest {
         Search search = new Search();
         System.out.println(System.getProperty("java.io.tmpdir"));
         String tmpdir = System.getProperty("java.io.tmpdir");
-        File parent = new File(tmpdir + "parent");
+        File parent = new File(tmpdir + "/parent");
         parent.mkdir();
         File folder1 = new File(parent.getPath() + "/папка1");
         File folder2 = new File(parent.getPath() + "/папка2");
