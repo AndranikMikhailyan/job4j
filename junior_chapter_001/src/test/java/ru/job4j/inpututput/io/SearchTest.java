@@ -15,6 +15,7 @@ public class SearchTest {
     @Test
     public void whenSearchDwgThenReturn2DwgFiles() throws IOException {
         Search search = new Search();
+        System.out.println(System.getProperty("java.io.tmpdir"));
         String tmpdir = System.getProperty("java.io.tmpdir");
         File parent = new File(tmpdir + "parent");
         parent.mkdir();
@@ -39,6 +40,7 @@ public class SearchTest {
     @Test
     public void whenSearchTxtThenReturn1Txt() throws IOException {
         Search search = new Search();
+        System.out.println(System.getProperty("java.io.tmpdir"));
         String tmpdir = System.getProperty("java.io.tmpdir");
         File parent = new File(tmpdir + "parent");
         parent.mkdir();
