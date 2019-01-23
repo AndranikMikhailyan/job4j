@@ -19,6 +19,7 @@ public class SearchTest {
         String tmpdir = System.getProperty("java.io.tmpdir");
         File parent = new File(tmpdir + "/parent");
         parent.mkdir();
+        System.out.println(parent);
         File folder1 = new File(parent.getPath() + "/папка1");
         File folder2 = new File(parent.getPath() + "/папка2");
         folder1.mkdir();
@@ -27,14 +28,12 @@ public class SearchTest {
         File fileDoc = new File(parent, "book.doc");
         File fileDoc2 = new File(folder1, "books.doc");
         File filedwg = new File(folder2, "temp.dwg");
-        File filedwg2 = new File(folder1, "temp2.dwg");
-        filedwg2.createNewFile();
         filedwg.createNewFile();
         fileDoc2.createNewFile();
         fileTxt.createNewFile();
         fileDoc.createNewFile();
         List<File> list = search.files(parent.getPath(), List.of("dwg"));
-        assertThat(list, is(Arrays.asList(filedwg2, filedwg)));
+        assertThat(list, is(Arrays.asList(filedwg)));
     }
 
     @Test
@@ -52,8 +51,6 @@ public class SearchTest {
         File fileDoc = new File(parent, "book.doc");
         File fileDoc2 = new File(folder1, "books.doc");
         File filedwg = new File(folder2, "temp.dwg");
-        File filedwg2 = new File(folder1, "temp2.dwg");
-        filedwg2.createNewFile();
         filedwg.createNewFile();
         fileDoc2.createNewFile();
         fileTxt.createNewFile();
