@@ -18,8 +18,8 @@ public class SearchTest {
         String tmpdir = System.getProperty("java.io.tmpdir");
         File parent = new File(tmpdir + "parent");
         parent.mkdir();
-        File folder1 = new File(parent.getPath() + "\\папка1");
-        File folder2 = new File(parent.getPath() + "\\папка2");
+        File folder1 = new File(parent.getPath() + "/папка1");
+        File folder2 = new File(parent.getPath() + "/папка2");
         folder1.mkdir();
         folder2.mkdir();
         File fileTxt = new File(parent, "text.txt");
@@ -42,8 +42,8 @@ public class SearchTest {
         String tmpdir = System.getProperty("java.io.tmpdir");
         File parent = new File(tmpdir + "parent");
         parent.mkdir();
-        File folder1 = new File(parent.getPath() + "\\папка1");
-        File folder2 = new File(parent.getPath() + "\\папка2");
+        File folder1 = new File(parent.getPath() + "/папка1");
+        File folder2 = new File(parent.getPath() + "/папка2");
         folder1.mkdir();
         folder2.mkdir();
         File fileTxt = new File(parent, "text.txt");
