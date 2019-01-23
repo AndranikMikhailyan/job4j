@@ -8,12 +8,9 @@ public class DeleteWordsTest {
 
     @Test
     public void whenDeleteWorld() throws IOException {
-        Writer out = new FileWriter(
-                "C:\\projects\\job4j\\junior_chapter_001\\src\\test\\java\\ru\\job4j\\inpututput\\io\\Destination.txt"
-        );
-        Reader in = new FileReader(
-                "C:\\projects\\job4j\\junior_chapter_001\\src\\test\\java\\ru\\job4j\\inpututput\\io\\Sours.txt"
-        );
+        char[] c = ("Hello world what then\n" + "1\n" + "\n" + "no").toCharArray();
+        Writer out = new CharArrayWriter();
+        Reader in = new CharArrayReader(c);
         DeleteWords deleteWords = new DeleteWords();
         deleteWords.dropAbuses(in, out, new  String[]{"Hello", "1"});
     }
