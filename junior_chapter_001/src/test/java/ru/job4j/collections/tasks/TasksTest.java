@@ -20,13 +20,13 @@ public class TasksTest {
     @Test
     public void whenNotSameCharsThenFalse() {
         Tasks tasks = new Tasks();
-        assertThat(tasks.containSameChar("Мама", "Аммм"), is(false));
+        assertThat(tasks.containSameChar("Мама", "аааамммм"), is(false));
     }
 
     @Test
     public void whenNotSameLengthChatsThenFalse() {
         Tasks tasks = new Tasks();
-        assertThat(tasks.containSameChar("Мама", "Амм"), is(false));
+        assertThat(tasks.containSameChar("Мама", "аам"), is(false));
     }
 
 

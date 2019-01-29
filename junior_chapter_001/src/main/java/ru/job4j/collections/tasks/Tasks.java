@@ -8,9 +8,7 @@ public class Tasks {
         boolean result = false;
         HashMap<Character, String> first = convert(firstWord);
         HashMap<Character, String> second = convert(secondWord);
-        HashSet set = new HashSet(first.values());
-        set.removeAll(second.values());
-        if (set.size() == 0) {
+        if (first.toString().equals(second.toString())) {
             result = true;
         }
         return result;
