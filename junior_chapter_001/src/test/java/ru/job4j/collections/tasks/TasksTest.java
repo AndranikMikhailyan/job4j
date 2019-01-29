@@ -2,7 +2,9 @@ package ru.job4j.collections.tasks;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -27,13 +29,18 @@ public class TasksTest {
         assertThat(tasks.containSameChar("Мама", "Амм"), is(false));
     }
 
+
+    @Test
+    public void whenMargarinThenReturnAR() {
+        Tasks tasks = new Tasks();
+        assertThat(tasks.duplicatesChars("Margarinm"), is(new ArrayList(List.of('a', 'm', 'r'))));
+    }
+
     @Test
     public void arrayAsKey() {
-        Array<Integer> first = new Array<>(2);
-        first.add(1);
-        Array<Integer> second = new Array<>(2);
-        second.add(2);
-        HashMap<Array, String> hashMap = new HashMap<>();
+        IntArray first = new IntArray(new int[] {1, 2, 3});
+        IntArray second = new IntArray(new int[] {1, 2});
+        HashMap<IntArray, String> hashMap = new HashMap<>();
         hashMap.put(first, "первый");
         hashMap.put(second, "второй");
         assertThat(hashMap.size(), is(2));
@@ -43,11 +50,9 @@ public class TasksTest {
 
     @Test
     public void arrayAsKey2() {
-        Array<Integer> first = new Array<>(2);
-        first.add(1);
-        Array<Integer> second = new Array<>(2);
-        second.add(1);
-        HashMap<Array, String> hashMap = new HashMap<>();
+        IntArray first = new IntArray(new int[] {1, 2});
+        IntArray second = new IntArray(new int[] {1, 2});
+        HashMap<IntArray, String> hashMap = new HashMap<>();
         hashMap.put(first, "первый");
         hashMap.put(second, "второй");
         assertThat(hashMap.size(), is(1));

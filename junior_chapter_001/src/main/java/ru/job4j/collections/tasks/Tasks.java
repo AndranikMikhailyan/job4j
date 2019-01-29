@@ -1,37 +1,41 @@
 package ru.job4j.collections.tasks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Tasks {
 
-    public boolean containSameChar(String first, String second) {
-        boolean result = true;
-        if (first.length() == second.length()) {
-            HashMap<Character, ArrayList<Character>> chars = new HashMap<>();
-            for (char[] ch : new char[][] {first.toCharArray(), second.toCharArray()}) {
-                for (char c : ch) {
-                    if (!chars.containsKey(c)) {
-                        ArrayList<Character> list = new ArrayList<>();
-                        list.add(c);
-                        chars.put(c, list);
-                    } else {
-                        chars.get(c).add(c);
-                    }
-                }
-            }
-            for (List<Character> value : chars.values()) {
-                if (value.size() % 2 != 0) {
-                    result = false;
-                    break;
-                }
-            }
-        } else {
-            result = false;
+    public boolean containSameChar(String firstWord, String secondWord) {
+        boolean result = false;
+        HashMap<Character, String> first = convert(firstWord);
+        HashMap<Character, String> second = convert(secondWord);
+        HashSet set = new HashSet(first.values());
+        set.removeAll(second.values());
+        if (set.size() == 0) {
+            result = true;
         }
         return result;
     }
 
+    public ArrayList<Character> duplicatesChars(String word) {
+        ArrayList<Character> result = new ArrayList<>();
+        HashMap<Character, String> wordMap = convert(word);
+        wordMap.forEach((character, string) -> {
+            if (string.length() > 1) {
+                result.add(character);
+            }
+        });
+        Collections.sort(result);
+        return result;
+    }
 
+    private HashMap<Character, String> convert(String word) {
+        String wrd = word.toLowerCase();
+        HashMap<Character, String> result = new HashMap<>();
+        char[] chars = wrd.toCharArray();
+        for (char aChar : chars) {
+            result.computeIfPresent(aChar, (character, string) -> string = string + aChar);
+            result.putIfAbsent(aChar, String.valueOf(aChar));
+        }
+        return result;
+    }
 }
