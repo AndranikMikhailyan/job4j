@@ -12,6 +12,9 @@ public class ArchiverTest {
     @Test
     public void when() throws IOException {
         Archiver archiver = new Archiver();
+        System.out.println(System.getProperties().toString());
+        File file = new File("job4j");
+        System.out.println(file.getParent());
         archiver.toZip("C:/projects/job4j", List.of("class"));
     }
 
