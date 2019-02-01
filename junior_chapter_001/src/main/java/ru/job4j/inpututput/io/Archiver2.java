@@ -18,9 +18,9 @@ public class Archiver2 {
             if (args[i].equals("-d")) {
                 dir = args[++i];
             } else if (args[i].equals("-o")) {
-                zipName = args[++i];
+                zipName = args[++i] + ".zip";
             } else if (args[i].equals("-e")) {
-                zipName = args[++i];
+                exts.add(args[++i]);
             }
         }
         Archiver2 archiver = new Archiver2();
