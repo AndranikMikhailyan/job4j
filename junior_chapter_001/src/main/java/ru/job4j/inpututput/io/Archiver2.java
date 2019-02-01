@@ -1,6 +1,7 @@
 package ru.job4j.inpututput.io;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -9,8 +10,25 @@ import java.util.zip.ZipOutputStream;
 
 public class Archiver2 {
 
-    public void toZip(String dir, List<String> exts) throws IOException {
-        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(dir + ".zip"));
+    public static void main(String[] args) throws IOException {
+        String dir = null;
+        String zipName = null;
+        ArrayList<String> exts = new ArrayList<>();
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-d")) {
+                dir = args[++i];
+            } else if (args[i].equals("-o")) {
+                zipName = args[++i];
+            } else if (args[i].equals("-e")) {
+                zipName = args[++i];
+            }
+        }
+        Archiver2 archiver = new Archiver2();
+        archiver.toZip(dir, zipName, exts);
+    }
+
+    public void toZip(String dir, String zipName, List<String> exts) throws IOException {
+        ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipName));
         File file = new File(dir);
         String prefix = file.getParent();
         Queue<File> files = new LinkedList<>(List.of(file));
