@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -14,7 +15,7 @@ public class ChatDispatch {
     private File file;
     private RandomAccessFile ansvers;
     private Random rnd = new Random();
-    private String state = "";
+    private String state;
 
     public ChatDispatch(File file) throws FileNotFoundException {
         this.file = file;
@@ -22,17 +23,14 @@ public class ChatDispatch {
         actions.put("стоп", this.stop());
         actions.put("продолжить", this.botContinue());
         actions.put("закончить", this.exit());
+        this.state = "";
     }
 
     public boolean read(String phrase) {
         System.out.println("Я написал :" + phrase);
-        if (state.equals("стоп")
-                && !phrase.equals("продолжить")
-                && !phrase.equals("закончить")) {
+        if (state.equals("стоп") && !phrase.equals("продолжить") && !phrase.equals("закончить")) {
             phrase = state;
-        } else if (state.equals("продолжить")
-                && !phrase.equals("закончить")
-                && !phrase.equals("стоп")) {
+        } else if (state.equals("продолжить") && !phrase.equals("закончить") && !phrase.equals("стоп")) {
             phrase = "";
         }
         boolean result = true;
@@ -49,7 +47,9 @@ public class ChatDispatch {
             try {
                 ansvers.seek(rnd.nextInt((int) ansvers.length()));
                 ansvers.readLine();
-                System.out.println("Бот написал: " + ansvers.readLine());
+                System.out.println(
+                        "Бот написал: "
+                                + new String(ansvers.readLine().getBytes(StandardCharsets.ISO_8859_1), "UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,7 +63,9 @@ public class ChatDispatch {
             try {
                 ansvers.seek(rnd.nextInt((int) ansvers.length()));
                 ansvers.readLine();
-                System.out.println("Бот продолжает отвечать и написал: " + ansvers.readLine());
+                System.out.println(
+                        "Бот продолжает отвечать и написал: "
+                                + new String(ansvers.readLine().getBytes(StandardCharsets.ISO_8859_1), "UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -72,8 +74,8 @@ public class ChatDispatch {
     }
 
     private Supplier<Boolean> stop() {
-        state = "стоп";
         return () -> {
+            state = "стоп";
             System.out.println("Бот ждет команды продолжить:");
             return true;
         };
