@@ -11,20 +11,9 @@ import java.util.zip.ZipOutputStream;
 public class Archiver2 {
 
     public static void main(String[] args) throws IOException {
-        String dir = null;
-        String zipName = null;
-        ArrayList<String> exts = new ArrayList<>();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-d")) {
-                dir = args[++i];
-            } else if (args[i].equals("-o")) {
-                zipName = args[++i] + ".zip";
-            } else if (args[i].equals("-e")) {
-                exts.add(args[++i]);
-            }
-        }
+        Args cmdArgs = new Args(args);
         Archiver2 archiver = new Archiver2();
-        archiver.toZip(dir, zipName, exts);
+        archiver.toZip(cmdArgs.getDir(), cmdArgs.getZipName(), cmdArgs.getExts());
     }
 
     public void toZip(String dir, String zipName, List<String> exts) throws IOException {
