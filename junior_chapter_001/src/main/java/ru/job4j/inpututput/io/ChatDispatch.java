@@ -12,10 +12,10 @@ import java.util.function.Supplier;
 public class ChatDispatch {
 
     private HashMap<String, Supplier<Boolean>> actions = new HashMap<>();
-    private File file;
-    private RandomAccessFile ansvers;
-    private Random rnd = new Random();
-    private String state;
+    private final File file;
+    private final RandomAccessFile ansvers;
+    private final Random rnd = new Random();
+    private final StringBuilder state = new StringBuilder();
 
     public ChatDispatch(File file) throws FileNotFoundException {
         this.file = file;
@@ -23,14 +23,16 @@ public class ChatDispatch {
         actions.put("стоп", this.stop());
         actions.put("продолжить", this.botContinue());
         actions.put("закончить", this.exit());
-        this.state = "";
     }
 
     public boolean read(String phrase) {
         System.out.println("Я написал :" + phrase);
-        if (state.equals("стоп") && !phrase.equals("продолжить") && !phrase.equals("закончить")) {
-            phrase = state;
-        } else if (state.equals("продолжить") && !phrase.equals("закончить") && !phrase.equals("стоп")) {
+        if (state.toString().equals("стоп")
+                && !phrase.equals("закончить")
+                && !phrase.equals("продолжить")) {
+            phrase = state.toString();
+        } else if (state.toString().equals("продолжить")
+                && !phrase.equals("закончить")) {
             phrase = "";
         }
         boolean result = true;
@@ -59,7 +61,7 @@ public class ChatDispatch {
 
     private Supplier<Boolean> botContinue() {
         return () -> {
-            state = "продолжить";
+            state.replace(0, state.toString().length(), "продолжить");
             try {
                 ansvers.seek(rnd.nextInt((int) ansvers.length()));
                 ansvers.readLine();
@@ -75,7 +77,7 @@ public class ChatDispatch {
 
     private Supplier<Boolean> stop() {
         return () -> {
-            state = "стоп";
+            state.replace(0, state.toString().length(), "стоп");
             System.out.println("Бот ждет команды продолжить:");
             return true;
         };
