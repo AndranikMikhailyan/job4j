@@ -1,10 +1,7 @@
 package ru.job4j.inpututput.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -17,52 +14,43 @@ public class Archiver2 {
     }
 
     public void toZip(String dir, String zipName, List<String> exts) throws IOException {
+        ArrayList<File> filteredFiles = this.filter(dir, exts);
         ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipName));
         File file = new File(dir);
         String prefix = file.getParent();
-        Queue<File> files = new LinkedList<>(List.of(file));
-        while (files.size() > 0) {
-            if (files.peek().isFile()) {
-                String fileName = files.peek().getPath().substring(prefix.length() + 1);
-                exts.stream().forEach(s -> {
-                    if (fileName.endsWith("." + s)) {
-                        try {
-                            archive(files.poll(), zipOut, fileName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            } else if (isEmptyDirectory(files.peek())) {
-                zipOut.putNextEntry(new ZipEntry(files.poll().getName() + "/"));
+        for (File f : filteredFiles) {
+            String nextFileName = f.getPath().substring(prefix.length() + 1);
+            if (f.isDirectory()) {
+                zipOut.putNextEntry(new ZipEntry(nextFileName + "/"));
                 zipOut.closeEntry();
             } else {
-                for (File nextFile : files.poll().listFiles()) {
-                    String nextFileName = nextFile.getPath().substring(prefix.length() + 1);
-                    if (nextFile.isDirectory()) {
-                        if (isEmptyDirectory(nextFile)) {
-                            zipOut.putNextEntry(new ZipEntry(nextFileName + "/"));
-                            zipOut.closeEntry();
-                        } else {
-                            zipOut.putNextEntry(new ZipEntry(nextFileName + "/"));
-                            zipOut.closeEntry();
-                            files.add(nextFile);
-                        }
-                    } else {
-                        exts.stream().forEach(s -> {
-                            if (nextFileName.endsWith("." + s)) {
-                                try {
-                                    archive(nextFile, zipOut, nextFileName);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                archive(f, zipOut, nextFileName);
+            }
+        }
+        zipOut.close();
+    }
+
+    private ArrayList<File> filter(String dir, List<String> exts) {
+        ArrayList<File> filtered = new ArrayList<>();
+        File file = new File(dir);
+        Queue<File> queue = new LinkedList<>(List.of(file));
+        while (queue.size() > 0) {
+            File nextFile = queue.poll();
+            if (nextFile.isDirectory()) {
+                filtered.add(nextFile);
+                if (!isEmptyDirectory(nextFile)) {
+                    Arrays.stream(nextFile.listFiles()).forEach(next -> queue.add(next));
+                }
+            } else {
+                for (String suff: exts) {
+                    if (nextFile.getName().endsWith(suff)) {
+                        filtered.add(nextFile);
+                        break;
                     }
                 }
             }
         }
-        zipOut.close();
+        return filtered;
     }
 
     private void archive(File src, ZipOutputStream zipOut, String entryName) throws IOException {
