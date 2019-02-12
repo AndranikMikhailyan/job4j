@@ -15,21 +15,24 @@ public class Server {
     }
 
     public void start() throws IOException {
-        PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         String ask;
-        do {
-            System.out.println("Ожидание команды ...");
-            ask = in.readLine();
-            System.out.println(ask);
-            if ("привет".equals(ask.toLowerCase())) {
-                out.println("Привет, дорогой друг, я oracle.");
-                out.println();
-            } else if (!"пока".equals(ask)) {
-                out.println("Ок!");
-                out.println();
-            }
-        } while (!"пока".equals(ask));
+        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
+            do {
+                System.out.println("Ожидание команды ...");
+                ask = in.readLine();
+                System.out.println(ask);
+                if ("привет".equals(ask.toLowerCase())) {
+                    out.println("Привет, дорогой друг, я oracle.");
+                    out.println();
+                } else if (!"пока".equals(ask)) {
+                    out.println("Ок!");
+                    out.println();
+                }
+            } while (!"пока".equals(ask));
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException {

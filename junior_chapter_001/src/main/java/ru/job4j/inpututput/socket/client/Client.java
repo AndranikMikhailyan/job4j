@@ -18,19 +18,22 @@ public class Client {
     }
 
     public void connectToServer() throws IOException {
-        PrintWriter outToServer = new PrintWriter(this.socket.getOutputStream(), true);
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-        Scanner console = new Scanner(System.in);
-        String str;
-        do {
-            System.out.println("Напишите что то");
-            outToServer.println((str = console.nextLine()));
-            if (!"пока".equals(str)) {
-                while (!(str = inFromServer.readLine()).isEmpty()) {
-                    System.out.println(str);
+        try (PrintWriter outToServer = new PrintWriter(this.socket.getOutputStream(), true);
+             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
+            Scanner console = new Scanner(System.in);
+            String str;
+            do {
+                System.out.println("Напишите что то");
+                outToServer.println((str = console.nextLine()));
+                if (!"пока".equals(str)) {
+                    while (!(str = inFromServer.readLine()).isEmpty()) {
+                        System.out.println(str);
+                    }
                 }
-            }
-        } while (!"пока".equals(str));
+            } while (!"пока".equals(str));
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
         socket.close();
     }
 
