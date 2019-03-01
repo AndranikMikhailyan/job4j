@@ -1,6 +1,7 @@
 package ru.job4j.inpututput.socket.client;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public interface ClientManager {
 
@@ -12,28 +13,25 @@ public interface ClientManager {
     /**
      * Метод выводит в консоль список содержимого текущей папки на сервере.
      */
-    void getContents();
+    Supplier<Boolean> getContents();
 
     /**
      * Метод переходит в указанную папку на сервере.
-     * @param folderName - имя папки в которую надо перейти
      */
-    void goToFolder(String folderName);
+    Supplier<Boolean> goToFolder();
 
     /**
      * Метод переходит в родительскую папку на сервере.
      */
-    void goBack();
+    Supplier<Boolean> goBack();
 
     /**
      * Метод отправляет имя файла, который требуется найти. Создает новый файл, и копирует в него байты из входного потока.
-     * @param fileName - имя файла.
      */
-    void download(String fileName);
+    Supplier<Boolean> download();
 
     /**
      * Метод передает имя файла серверу,  и копирует байты из файла в входной поток.
-     * @param file - файл загружаемый на сервер.
      */
-    void upload(File file);
+    Supplier<Boolean> upload();
 }

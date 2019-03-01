@@ -24,11 +24,15 @@ public class Client {
             String str;
             do {
                 System.out.println("Напишите что то");
-                outToServer.println((str = console.nextLine()));
+                str = console.nextLine();
+                outToServer.println(str);
                 if (!"пока".equals(str)) {
-                    while (!(str = inFromServer.readLine()).isEmpty()) {
-                        System.out.println(str);
-                    }
+                    do {
+                        str = inFromServer.readLine();
+                        if (!str.isEmpty()) {
+                            System.out.println(str);
+                        }
+                    } while (!str.isEmpty());
                 }
             } while (!"пока".equals(str));
         } catch (IOException e) {

@@ -1,5 +1,8 @@
 package ru.job4j.inpututput.socket.server;
 
+import java.io.IOException;
+import java.util.function.Supplier;
+
 /**
  * При реализации сервера, необходимо добавить поле храняшее директорию.
  * Для вызова метода со стороны клиента можно воспользоваться диспатч патерном.
@@ -10,33 +13,30 @@ public interface ServerManager {
     /**
      * Метод запускает сервер.
      */
-    void start();
+    void start(String path) throws IOException;
 
     /**
      * Метод выводит список содержимого текущей папки.
      */
-    void getContents();
+    Supplier<Boolean> getContents();
 
     /**
      * Метод переходит в указанную папку.
-     * @param folderName - имя папки в которую надо перейти
      */
-    void goToFolder(String folderName);
+    Supplier<Boolean> goToFolder();
 
     /**
      * Метод переходит в родительскую папку.
      */
-    void goBack();
+    Supplier<Boolean> goBack();
 
     /**
      * Метод находит нужный файл и копирует его содержимое в выходной поток.
-     * @param fileName - имя файла.
      */
-    void download(String fileName);
+    Supplier<Boolean> download();
 
     /**
      * Метод принимает имя файла, создает новый файл в директории и копирует в него байты из входного потока.
-     * @param fileName - имя файла.
      */
-    void upload(String fileName);
+    Supplier<Boolean> upload();
 }

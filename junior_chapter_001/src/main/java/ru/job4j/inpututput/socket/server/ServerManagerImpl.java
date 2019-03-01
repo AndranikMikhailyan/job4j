@@ -165,6 +165,6 @@ public class ServerManagerImpl implements ServerManager {
 
     public static void main(String[] args) throws IOException {
         ServerManagerImpl smi = new ServerManagerImpl(8080);
-        smi.start( "D:\\Andranik\\Трейдинг");
+        smi.start("D:\\Andranik\\Трейдинг");
     }
 }

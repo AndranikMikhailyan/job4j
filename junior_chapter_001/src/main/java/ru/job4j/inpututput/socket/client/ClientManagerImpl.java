@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
-public class ClientManagerImpl implements ClientManager{
+public class ClientManagerImpl implements ClientManager {
 
     private Socket socket;
     private HashMap<Integer, Supplier<Boolean>> methods;
@@ -37,7 +37,8 @@ public class ClientManagerImpl implements ClientManager{
         String comand;
         do {
             System.out.println("Введите команду ...");
-            outToServer.println((comand = console.nextLine()));
+            comand = console.nextLine();
+            outToServer.println(comand);
             if (!comand.equals("0")) {
                 this.methods.get(Integer.parseInt(comand)).get();
             }
@@ -66,9 +67,12 @@ public class ClientManagerImpl implements ClientManager{
         return () -> {
             try {
                 String msg;
-                while (!(msg = fromServer.readLine()).isEmpty()) {
-                    System.out.println(msg);
-                }
+                do {
+                    msg = fromServer.readLine();
+                    if (!msg.isEmpty()) {
+                        System.out.println(msg);
+                    }
+                } while (!msg.isEmpty());
             } catch (IOException e) {
                 e.printStackTrace();
             }
