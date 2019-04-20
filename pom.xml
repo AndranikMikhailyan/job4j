@@ -6,21 +6,20 @@
     <version>2.0</version>
     <name>junior</name>
     <url>http://job4j.ru/</url>
-
     <properties>
        <maven.compiler.source>11</maven.compiler.source>
        <maven.compiler.target>11</maven.compiler.target>
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <modules>
        <module>chapter_001</module>
         <module>chapter_002</module>
         <module>chapter_003</module>
         <module>chapter_004</module>
 		<module>junior_chapter_001</module>
+		<module>junior_chapter_002</module>
+		<module>junior_chapter_003</module>
 	</modules>
-
     <build>
         <plugins>
             <plugin>
@@ -77,7 +76,6 @@
 			<version>1.3</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -90,21 +88,18 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>11</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-graphics -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-graphics</artifactId>
 			<version>11</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
 			<version>11</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
@@ -122,6 +117,6 @@
 			<artifactId>guava</artifactId>
 			<version>19.0</version>
 		</dependency>
-	</dependencies>
 
+	</dependencies>
 </project>
