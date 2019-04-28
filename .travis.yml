@@ -2,8 +2,6 @@
 language: java
 jdk: openjdk11
 
-curl -o /tmp/install-jdk.sh -L https://raw.githubusercontent.com/sormuras/bach/master/install-jdk.sh
-bash -x /tmp/install-jdk.sh --target "/home/travis/openjdk11" --workspace "/home/travis/.cache/install-jdk" --feature "11" --license "GPL" --cacerts
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
 
