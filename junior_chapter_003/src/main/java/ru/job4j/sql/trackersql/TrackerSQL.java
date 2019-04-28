@@ -46,12 +46,12 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     private void tablesInit(Connection connection) {
         try (Statement st = connection.createStatement()) {
-            st.executeQuery("create table if not exists item("
+            st.execute("create table if not exists item("
                     + "  item_id serial primary key,"
                     + "  name varchar(200) not null,"
                     + "  description varchar(200) not null,"
                     + "  created timestamp)");
-            st.executeQuery("create table if not exists comment("
+            st.execute("create table if not exists comment("
                     + "  comment_id serial primary key,"
                     + "  comment varchar(3000),"
                     + "  item_id int references item(item_id))");
