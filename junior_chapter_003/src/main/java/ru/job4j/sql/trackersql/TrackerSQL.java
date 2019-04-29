@@ -60,19 +60,59 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         }
     }
 
+    /**
+     * Метод добавляет заявку в базу данных.
+     * @param item Заявка которую необходимо добавить.
+     * @return Возвращает объект заявки.
+     */
     @Override
     public Item add(Item item) {
-        return null;
+        try (PreparedStatement st = this.connection
+                .prepareStatement("insert into item (name, description, created) values (?, ?, ?)")) {
+            st.setString(1, item.getName());
+            st.setString(2, item.getDesc());
+            st.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return item;
     }
 
+    /**
+     * Метод меняет заявку по номеру id на новую заявку item.
+     * @param id Уникальный номер заменяемой заявки
+     * @param item Новая заявка в замен существующей по "id" заявке.
+     * @return возвращает true если замена произошла, false если нет.
+     */
     @Override
     public boolean replace(String id, Item item) {
-        return false;
+        try (PreparedStatement st = this.connection
+                .prepareStatement("update item set (name, description, created) = (?, ?, ?) where item_id=" + Integer.parseInt(id))) {
+        st.setString(1, item.getName());
+        st.setString(2, item.getDesc());
+        st.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+        st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
+    /**
+     * Метод удаляет заявку из базы данных.
+     * @param id Уникальный номер удаляемой заявки.
+     * @return возвращает true если удаление произошло, false если нет.
+     */
     @Override
     public boolean delete(String id) {
-        return false;
+        try (PreparedStatement st = connection.prepareStatement("delete from item where item_id = ?")) {
+            st.setInt(1, Integer.parseInt(id));
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
@@ -85,18 +125,31 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         return null;
     }
 
+    /**
+     * Метод находи заявку в базе и возвращает объект построенный да ее данных.
+     * @param id Уникальный номер искомой заявки.
+     * @return Возвращает объек заявки.
+     */
     @Override
     public Item findById(String id) {
-        return null;
+        Item item = null;
+        try (Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from item where item_id=" + Integer.parseInt(id))) {
+            while (rs.next()) {
+                item = new Item(rs.getString(2), rs.getString(3), 1); // поле created в item не того типа изначально.
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return item;
     }
 
+    /**
+     * Метод закрывает соединение с базой.
+     * @throws Exception
+     */
     @Override
     public void close() throws Exception {
-
-    }
-
-    public static void main(String[] args) {
-        TrackerSQL trackerSQL = new TrackerSQL();
-        trackerSQL.init();
+        connection.close();
     }
 }
