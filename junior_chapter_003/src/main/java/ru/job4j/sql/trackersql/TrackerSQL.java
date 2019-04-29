@@ -4,6 +4,7 @@ import ru.job4j.tracker.ITracker;
 import ru.job4j.tracker.Item;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -115,14 +116,40 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         return true;
     }
 
+    /**
+     * Метод делает выборку из базы данных и на ее основе создает список заявок.
+     * @return Возвращает список объектов заявок.
+     */
     @Override
     public List<Item> findAll() {
-        return null;
+        List<Item> items = new ArrayList<>();
+        try (Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from item")) {
+            while (rs.next()) {
+                items.add(new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
+    /**
+     * Метод делает выборку с одинаковым именем заявки из базы данных и на ее основе создает список заявок.
+     * @return Возвращает список объектов заявок с одинаковым именем.
+     */
     @Override
     public List<Item> findByName(String key) {
-        return null;
+        List<Item> items = new ArrayList<>();
+        try (Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from item where name = " + key)) {
+            while (rs.next()) {
+                items.add(new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     /**
@@ -136,7 +163,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         try (Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery("select * from item where item_id=" + Integer.parseInt(id))) {
             while (rs.next()) {
-                item = new Item(rs.getString(2), rs.getString(3), 1); // поле created в item не того типа изначально.
+                item = new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime());
             }
         } catch (SQLException e) {
             e.printStackTrace();
