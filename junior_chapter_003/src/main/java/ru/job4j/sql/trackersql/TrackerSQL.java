@@ -31,9 +31,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
             this.connection = DriverManager.getConnection(
-              config.getProperty("url"),
-              config.getProperty("username"),
-              config.getProperty("password")
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
             );
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -89,11 +89,12 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public boolean replace(String id, Item item) {
         try (PreparedStatement st = this.connection
-                .prepareStatement("update item set (name, description, created) = (?, ?, ?) where item_id=" + Integer.parseInt(id))) {
-        st.setString(1, item.getName());
-        st.setString(2, item.getDesc());
-        st.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-        st.executeUpdate();
+                .prepareStatement("update item set (name, description, created) = (?, ?, ?) where item_id=?")) {
+            st.setString(1, item.getName());
+            st.setString(2, item.getDesc());
+            st.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            st.setInt(4, Integer.parseInt(id));
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,9 +125,13 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
         try (Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from item")) {
+             ResultSet rs = st.executeQuery("select * from item")) {
             while (rs.next()) {
-                items.add(new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime()));
+                items.add(new Item(
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getTimestamp("created").getTime()
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,11 +146,17 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public List<Item> findByName(String key) {
         List<Item> items = new ArrayList<>();
-        try (Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from item where name = " + key)) {
+        try (PreparedStatement st = connection.prepareStatement("select * from item where name = ?")) {
+            st.setString(1, key);
+            ResultSet rs = st.getResultSet();
             while (rs.next()) {
-                items.add(new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime()));
+                items.add(new Item(
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getTimestamp("created").getTime()
+                ));
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,10 +171,15 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public Item findById(String id) {
         Item item = null;
-        try (Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from item where item_id=" + Integer.parseInt(id))) {
+        try (PreparedStatement st = connection.prepareStatement("select * from item where item_id=?")) {
+            st.setInt(1, Integer.parseInt(id));
+            ResultSet rs = st.getResultSet();
             while (rs.next()) {
-                item = new Item(rs.getString(2), rs.getString(3), rs.getTimestamp(4).getTime());
+                item = new Item(
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getTimestamp("created").getTime()
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
